@@ -1,0 +1,144 @@
+{
+  "generated_by_isoloom": "from isoloom.yml; don't edit: change the spec and run `isoloom generate` (`isoloom check` fails when this file is out of date)",
+  "resolved_version": 1,
+  "name": "xben-096-library-services",
+  "instance": null,
+  "inputs": [],
+  "networks": {
+    "lab": {
+      "cidr": "10.61.139.0/24",
+      "docker_cidr": "10.61.139.0/24",
+      "internet": false,
+      "gateway": null,
+      "gateway_address": "10.61.139.1",
+      "router": null,
+      "controller": "10.61.139.253"
+    }
+  },
+  "reach": [],
+  "machines": {
+    "libraryv1": {
+      "access": false,
+      "supplied": false,
+      "shapes": [
+        "docker"
+      ],
+      "arch": "amd64",
+      "os": null,
+      "windows": false,
+      "addresses": {
+        "lab": "10.61.139.10"
+      },
+      "docker_addresses": {
+        "lab": "10.61.139.10"
+      },
+      "services": [
+        {
+          "port": 5000,
+          "name": "web",
+          "http": true,
+          "publish": 5050
+        }
+      ],
+      "depends_on": [],
+      "inputs": [],
+      "volumes": {},
+      "resources": {
+        "cpus": 1,
+        "memory_mb": 512,
+        "disk_gb": 20
+      },
+      "gateway_of": [],
+      "routes": [],
+      "default_gateway": null,
+      "offline": true
+    }
+  },
+  "start_order": [
+    "libraryv1"
+  ],
+  "clones": {},
+  "tools": {},
+  "groups": {},
+  "router": null,
+  "controller": {
+    "addresses": {
+      "lab": "10.61.139.253"
+    }
+  },
+  "published": [
+    {
+      "machine": "libraryv1",
+      "port": 5000,
+      "host_port": 5050
+    }
+  ],
+  "targets": {
+    "possible": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "generated": [
+      "docker",
+      "hosted",
+      "docker-vm",
+      "cloud-docker",
+      "kubernetes"
+    ],
+    "refused": {},
+    "not_possible": {
+      "hybrid": "only when some machines are containers and others are VMs",
+      "vagrant": "needs `vm:` on libraryv1",
+      "proxmox": "needs `vm:` on libraryv1",
+      "cloud-vm": "needs `vm:` on libraryv1",
+      "external": "needs `external:` on libraryv1"
+    }
+  },
+  "checks": {
+    "default_position": "networks",
+    "positions": [
+      {
+        "position": "networks",
+        "machine": null,
+        "runner": "isoloom-check",
+        "checks": [
+          {
+            "name": "the Library Services page answers",
+            "derived": false,
+            "kind": "http",
+            "target": "http://libraryv1:5000/",
+            "expect": "200",
+            "wait": 180
+          },
+          {
+            "name": "the book form parses submitted XML",
+            "derived": false,
+            "kind": "script",
+            "target": "checks/probe.sh",
+            "expect": "",
+            "wait": 60
+          }
+        ]
+      },
+      {
+        "position": "libraryv1",
+        "machine": "libraryv1",
+        "runner": "isoloom-check-libraryv1",
+        "checks": [
+          {
+            "name": "no internet from libraryv1",
+            "derived": true,
+            "kind": "http",
+            "target": "http://1.1.1.1/",
+            "expect": "blocked",
+            "wait": 0
+          }
+        ]
+      }
+    ]
+  },
+  "message": "Library Services answers at http://localhost:5050/.\nCan you add any ISBN in the new library service?\n"
+}
