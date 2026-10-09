@@ -94,7 +94,8 @@
       "vagrant": "needs `vm:` on libraryv1",
       "proxmox": "needs `vm:` on libraryv1",
       "cloud-vm": "needs `vm:` on libraryv1",
-      "external": "needs `external:` on libraryv1"
+      "external": "needs `external:` on libraryv1",
+      "cloud-services": "left out by `targets:`"
     }
   },
   "checks": {
